@@ -1,0 +1,11 @@
+WARNING: This code was written after midnight.
+
+To run:
+    perl get_all_rosettacode_tasks.pl
+    perl extract_one_lang_from_rosettacode_tasks_xml.pl
+
+To change which language is extracted, edit the extract program,
+and change the $wanted_language variable.
+
+You can reach me at the email address on https://github.com/Util ,
+or on IRC: Network=freenode, Channel=#rosettacode .
