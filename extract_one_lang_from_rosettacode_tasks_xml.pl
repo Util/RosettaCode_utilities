@@ -1,9 +1,10 @@
 #!/usr/bin/perl
+
 use strict;
 use warnings;
 use Data::Dumper; $Data::Dumper::Useqq = 1;
 
-my $wanted_language = 'Perl 6';
+my $wanted_language = 'C++';
 
 # extract_one_lang_from_rosettacode_tasks_xml.pl
 #   by Util of Perlmonks <bruce.gray@acm.org>
@@ -88,17 +89,30 @@ for my $page_aref (@pages) {
 #print Dumper \%lang_lines; last;
 }
 
+use File::Path qw(make_path);
+use File::Basename;
+
+
 for my $title ( sort keys %temp ) {
-    print "$title\n";
     for (@{ $temp{$title} }) {
         s{&lt;}{<}g;
         s{&gt;}{>}g;
         s{&quot;}{"}g;
         s{&amp;}{&}g;
         s{</lang>}{};
-        s{<lang perl6>}{};
+        s{<lang cpp>}{};
     }
-    print "\t$_\n" for @{ $temp{$title} };
+    my $savefile= $title . ".cpp";
+    my $dir  = dirname($savefile);
+    print $dir, " ",$savefile,"\n";
+    eval { make_path($dir) };
+    if ($@) {
+        print "Couldn't create $dir: $@";
+    }
+    open my $fh, '>', $savefile or die "Could not open file '$savefile' $!";
+    print $fh "\t$_\n" for @{ $temp{$title} };
+    close $fh;
+    
 }
 #print Dumper \@temp;
 
