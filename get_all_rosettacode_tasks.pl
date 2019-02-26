@@ -11,7 +11,7 @@ use Data::Dumper;
 # Note that it is currently caching, so `rm pt_75_*.{xml,json}` to update.
 
 my $batch_size = 75;
-my $base_url_json = "http://rosettacode.org/mw/api.php?action=query&list=categorymembers&cmtitle=Category:Programming_Tasks&format=json&cmlimit=$batch_size";
+my $base_url_json = "http://rosettacode.org/mw/api.php?action=query&list=categorymembers&cmtitle=Category:Programming_Tasks&format=json&cmlimit=$batch_size&rawcontinue";
 my $base_url_xml  = "http://rosettacode.org/mw/api.php?action=query&generator=categorymembers&gcmtitle=Category:Programming_Tasks&gcmlimit=$batch_size&export&exportnowrap";
 
 sub run {
@@ -32,14 +32,11 @@ print "getting $file\n";
 
 # Kludge to remove the need for JSON::XS module.
 my $continue_re = qr{
-        ,"query-continue":\{
+        "query-continue":\{
             "categorymembers":\{
                 "cmcontinue":"(page\|[a-fA-F0-9]+\|\d+)"
             \}
         \}
-    \}
-    \s*
-    \z
 }msx;
 
 my $n = 0;
